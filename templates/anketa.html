@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1>{% block title %} Анкета {% endblock %}</h1>
+{% endblock %}
+
+{% block text_description %}
+    <form class="container" action="/process">
+        <h4>Начнём с самого простого, расскажите немного о себе:</h4>
+        <div class="form-row">
+            <div class="col">
+                <label>Как Вас зовут?</label>
+                <input type="text" class="form-control" id="validationServer01" placeholder="Имя (Prénom)" name="Name" required>
+            </div>
+            <div class="col">
+                <label>Как Ваша фамилия?</label>
+                <input type="text" class="form-control" id="validationServer02" placeholder="Фамилия (Nom)" name="Surname" required>
+            </div>
+            <div class="form-group col-md-2">
+                <label>Сколько Вам лет?</label>
+                <input type="text" class="form-control" id="validationServer03" placeholder="Возраст (Age)" name="Age" required>
+            </div>
+            <div class="form-group col-md-2">
+                <label>Ваш пол?</label>
+                    <select class="custom-select" id="validationServer04" name="Gender" required>
+                        <option selected>Пол (Sexe):</option>
+                        <option value="1">Мужской</option>
+                        <option value="2">Женский</option>
+                        <option value="3">Другое</option>
+                    </select>
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Ваш родной язык?</label>
+                <input type="text" class="form-control" id="validationServer05" placeholder="Язык (Langue)" name="Language" required>
+            </div>
+            <div class="form-group col">
+                <label>Страна, где Вы проживаете последние 5 лет?</label>
+                <input type="text" class="form-control" id="validationServer06" placeholder="Страна (Pays)" name="Country" required>
+            </div>
+            <div class="form-group col">
+                <label>Ваша сфера деятельности (учёбы)?</label>
+                <input type="text" class="form-control" id="validationServer07" placeholder="Сфера (Sphère)" name="Domain" required>
+            </div>
+        </div>
+        <h4>Перейдём к опросу!</h4>
+        <h5>Ниже вы увидите несколько разных примеров. В каждом примере будет выделен ключевой глагол, т.е. глагол, акциональный класс которого Вы должны определить.<br>
+            Под примером Вы увидите поле с выпадающими ответами, Вам необходимо будет выбрать один из классов.<br>
+            Если ни один из них Вас не устраивает, то тогда Вам следует выбрать <i>Ничего (Rien)</i>.<br>
+            Если выбрали последний вариант, то я вас попрошу ниже в форме комментария написать, что по Вашему мнению это могло бы быть.<br>
+            <br>
+            <i>Большая просьба не оставлять пустыми поля и не переходить на другие вкладки нашей анкеты, так как форма может сломаться.<br>
+                <br>
+                Если Вы не знаете ответ, то выбирете то, что ближе Вашему сердцу или интуиции,<br>
+                <br>
+                Если это просто комментарий, то вы можете написать: "комментариев нет" или "не знаю" или "трудно сказать".<br>
+            </i>
+            <br>
+            Надеюсь, что это будет приятное времяпрепровождение для Вас. Удачи!
+            <br>
+        </h5>
+        {% for question in questions %}
+            <div class="row">
+                <p class="col-sm-15"><h5>{{question.question_text}}</h5></p>
+                {% if question.question_text.startswith('Вхождение в') %}
+                    <input type="text" class="form-control" id="validationServer08" placeholder="Ответ (Réponse)" name="q{{ question.question_id }}" required>
+                {% elif question.question_text.startswith('Есть ли') %}
+                    <input type="text" class="form-control" placeholder="Ответ (Réponse)" name="q{{ question.question_id }}">
+                {% elif question.question_text.startswith('Если у') %}
+                    <input type="text" class="form-control" placeholder="Ответ (Réponse)" name="q{{ question.question_id }}">
+                {% elif question.question_text.startswith('А вот тут') %}
+                    <input type="text" class="form-control" placeholder="Ответ (Réponse)" name="q{{ question.question_id }}">
+                {% else %}
+					<table class="col-md-8">
+                        <select class="custom-select" name="q{{ question.question_id }}">
+                            <option selected>Ваш вариант:</option>
+                            <option value="1">Состояние (Position)</option>
+                            <option value="2">Процесс (Processus)</option>
+                            <option value="3">Вхождение в состояние (entrée en Position)</option>
+                            <option value="4">Вхождение в процесс (entrée en Processus)</option>
+                            <option value="5">Мультипликативный процесс (Processus multiplicatif)</option>
+                            <option value="6">Ничего (Rien)</option>
+                        </select>
+                        <br>
+					</table>
+                {% endif %}
+            </div>
+        {% endfor %}
+			<div class="row">
+				<input class="submit" type="submit" name="submit" value="Сохранить ответ">
+			</div>
+		</form>
+{% endblock %}
+
+{% block foot %}
+    <h6><b>Мои контакты</b>: @steffi_haski (telegram), если вам что-то интересно <br>
+      <b>Вдохновители исследования</b>: НИС "акциональность и аспект", С.Г. Татевосов, С.К. Михайлов</h6>
+{% endblock %}

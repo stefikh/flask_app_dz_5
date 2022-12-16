@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %} Поиск по базе {% endblock %}
+
+{% block text_enter %}
+    <h3>Статистика на данный момент:</h3>
+{% endblock %}
+
+{% block text_main_1 %}
+    <table class="table table-borderless">
+        <thead class="table table-striped">
+            <tr>
+                <th scope="col"><h4>Немного о нашем опросе:</h4></th>
+            </tr>
+         </thead>
+        <tbody>
+            <tr>
+                <th scope="row"><h5>Всего опрос прошло</h5></th>
+                <td class="align-text-bottom"><h4>{{ all_stat['total_count'] }}</h4></td>
+            </tr>
+            <tr>
+                <th scope="row"><h5>Женщин</h5></th>
+                <td class="align-text-bottom"><h4>{{ all_stat['women'] }}</h4></td>
+            </tr>
+            <tr>
+                <th scope="row"><h5>Мужчин</h5></th>
+                <td class="align-text-bottom"><h4>{{ all_stat['men'] }}</h4></td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block text_main_2 %}
+    <table class="table table-borderless">
+        <thead class="table table-striped">
+            <tr>
+                <th scope="col"><h4>Немного о возрасте:</h4></th>
+            </tr>
+         </thead>
+        <tbody>
+            <tr>
+                <th scope="row"><h5>Средний возраст</h5></th>
+                <td class="align-text-bottom"><h4>{{ all_stat['age_mean'] }}</h4></td>
+            </tr>
+            <tr>
+                <th scope="row"><h5>Минимальный возраст</h5></th>
+                <td class="align-text-bottom"><h4>{{ all_stat['age_min'] }}</h4></td>
+            </tr>
+            <tr>
+                <th scope="row"><h5>Максимальный возраст</h5></th>
+                <td class="align-text-bottom"><h4>{{ all_stat['age_max'] }}</h4></td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block text_description %}
+    <h4>Немного об ответах:</h4>
+    {% for question in questions %}
+        <table class="table table-borderless">
+            <thead class="table table-striped">
+                <tr>
+                     {% if question.question_text.startswith('Вхождение в') %}
+                     {% elif question.question_text.startswith('Есть ли') %}
+                     {% elif question.question_text.startswith('Если у') %}
+                     {% elif question.question_text.startswith('А вот тут') %}
+                     {% else %}
+                        <th scope="col"><h4>{{ question.question_text }}</h4></th>
+                     {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for option in whole_ans[question.question_id] %}
+                    <tr>
+                        <th scope="row"><h5>{{ option }}:</h5></th>
+                        <td class="align-text-bottom"><h4>{{ whole_ans[question.question_id][option] }}</h4></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
+
+{% block foot %}
+    <h6><b>Мои контакты</b>: @steffi_haski (telegram), если вам что-то интересно <br>
+      <b>Вдохновители исследования</b>: НИС "акциональность и аспект", С.Г. Татевосов, С.К. Михайлов</h6>
+{% endblock %}
